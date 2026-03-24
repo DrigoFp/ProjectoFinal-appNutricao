@@ -1,4 +1,4 @@
-# 🍎 Nutrição Ativa - API Backend (ODS 3)
+# 🍎 Nutrição Activa - API Backend (ODS 3)
 
 Este é o servidor da aplicação **Nutrição Activa**, desenvolvido para ajudar utilizadores a monitorizar a sua ingestão nutricional diária. O projeto está alinhado com o **Objetivo de Desenvolvimento Sustentável 3 (Saúde e Bem-Estar)** da ONU.
 
