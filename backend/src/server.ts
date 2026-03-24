@@ -8,8 +8,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import testRoutes from "./routes/testRoutes.js"
-import foodEntriesRoutes from "./routes/foodEntriesRoutes.js"
+import testRoutes from "./routes/testRoutes.js";
+import foodEntriesRoutes from "./routes/foodEntriesRoutes.js";
+import { getDailyEntries } from './routes/getDailyEntries.js';
 
 
 // Carrega as variáveis do ficheiro .env
@@ -30,6 +31,9 @@ app.get('/', (req, res) => {
 app.use(testRoutes); // api principal o servidor express, este usa conjunto de rotas (testRoutes) dentro da aplicação principal. Liga essas rotas ao servidor
 
 app.use(foodEntriesRoutes); // é a API que é ligada ao servidor para ter a rota da entrada de comida
+
+app.get("/food-entries/today/:userId", getDailyEntries); // API rota GET, tem parâmetro dinâmico da URL e função
+
 
 // Iniciar o servidor
 app.listen(PORT, () => {
