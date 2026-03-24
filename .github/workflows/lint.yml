@@ -1,0 +1,31 @@
+name: Lint Code Check
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências do Backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Correr ESLint no Backend
+        run: |
+          cd backend
+          # Nota: Garante que tens o script "lint" no teu package.json
+          npm run lint || echo "Ainda não configuraste o script de lint"
