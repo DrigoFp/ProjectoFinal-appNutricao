@@ -14,6 +14,11 @@ Este é o servidor da aplicação **Nutrição Activa**, desenvolvido para ajuda
 
 ---
 
+### 🔄 Integração Contínua (CI)
+- Configurado **GitHub Actions** para validação automática de código (Linting) em cada Pull Request para a branch `main` e `development`.
+
+---
+
 ### 🛠️ Funcionalidades Implementadas (TP1)
 - [x] Ligação funcional ao Supabase Cloud.
 - [x] **GET** `/food-entries/today/:userId`: Lista as entradas do dia e calcula automaticamente os totais de Kcal, Proteínas, Carbohidratos, Gorduras e Fibras.
