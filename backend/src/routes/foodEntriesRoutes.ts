@@ -61,9 +61,10 @@ router.post("/food-entries", async (req, res) => {
       entry,
     });
 
-  } catch (error) {
-    res.status(500).json({ error: "Erro interno no servidor." });
-  }
+} catch (error) {
+  console.error("Erro detalhado:", error); 
+  return res.status(500).json({ error: "Erro ao processar pedido" });
+}
 });
 
 export default router;
