@@ -5,9 +5,9 @@
 // Liga rotas
 // Escuta pedidos na porta 3000
 
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import express from 'express'; // cria o servidor e as rotas
+import cors from 'cors'; // ligação front back
+import dotenv from 'dotenv'; // le as variaveis de ambiente
 import testRoutes from "./routes/testRoutes.js";
 import foodEntriesRoutes from "./routes/foodEntriesRoutes.js";
 import { getDailyEntries } from './routes/getDailyEntries.js';
@@ -17,7 +17,7 @@ import { createFoodEntry } from './routes/createFoodEntry.js';
 // Carrega as variáveis do ficheiro .env
 dotenv.config();
 
-const app = express();
+const app = express(); // cria aplicação express
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
   res.send('API Nutrição Ativa! 🌱');
 });
 
+// ligar rotas
 app.use(testRoutes); // api principal o servidor express, este usa conjunto de rotas (testRoutes) dentro da aplicação principal. Liga essas rotas ao servidor
 
 app.use(foodEntriesRoutes); // é a API que é ligada ao servidor para ter a rota da entrada de comida

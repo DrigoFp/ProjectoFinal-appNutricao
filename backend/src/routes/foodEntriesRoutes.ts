@@ -1,7 +1,9 @@
-import { Router } from "express";
-import { supabase } from "../config/supabaseClient.js";
+// Ficheiro que define as rotas relacionadas com registos de alimentos consumidos.
 
-const router = Router();
+import { Router } from "express"; // cria um mini-servidor dentro do Express do server.ts
+import { supabase } from "../config/supabaseClient.js"; // Ligação à base de dados Supabase
+
+const router = Router(); //  cria um mini-servidor
 
 // Criar um registo de alimento consumido
 router.post("/food-entries", async (req, res) => {

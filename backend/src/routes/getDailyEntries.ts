@@ -1,10 +1,10 @@
-// Rota de leitura GET
+ // Rota de leitura GET
 // Vais buscar todas as entradas alimentares do utilizador no dia de hoje
 // Calcular os totais nutricionais do dia
 // Devolver tudo num JSON organizado
 
-import { Request, Response } from "express";
-import { supabase } from "../config/supabaseClient.js"; // Usa o cliente que já criaste
+import { Request, Response } from "express"; // tipo do express do serve.ts
+import { supabase } from "../config/supabaseClient.js"; // Usa o cliente que já criei
 
 export const getDailyEntries = async (req: Request, res: Response) => {
   try {
