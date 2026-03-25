@@ -21,7 +21,7 @@ const app = express(); // cria aplicação express
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
-app.use(cors()); // Permite acessos externos
+app.use(cors()); // Permite acessos externos, qualquer site ou aplicação pode tentar fazer pedidos ao servidor.
 app.use(express.json()); // Permite receber dados em formato JSON
 
 // Rota de teste
