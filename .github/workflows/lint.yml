@@ -1,3 +1,15 @@
+# Continuous Integration.
+# É um sistema automático que corre sempre que faço push para o GitHub e abres um pull request
+# No meu código, o CI faz:
+  # Instala dependências
+  # Verifica se o TypeScript compila
+  # Corre o ESLint
+  # Usa Node 24
+  # Corre num servidor Ubuntu virtual fornecido pelo GitHub
+# O GitHub testa o meu backend automaticamente, sem depender do meu computador.
+  # Faz download do repositório
+  # Instala tudo o que está no package.json
+
 name: Lint Code Check
 
 on:
