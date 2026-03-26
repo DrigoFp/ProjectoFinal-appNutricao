@@ -22,7 +22,8 @@ router.post("/food-entries", async (req, res) => {
       .eq("id", food_id)
       .single();
 
-    if (foodError || !food) { // validação
+    if (foodError || !food) {
+      // validação
       return res.status(404).json({ error: "Alimento não encontrado." });
     }
 
@@ -62,11 +63,30 @@ router.post("/food-entries", async (req, res) => {
       message: "Entrada registada com sucesso!",
       entry,
     });
+  } catch (error) {
+    console.error("Erro detalhado:", error);
+    return res.status(500).json({ error: "Erro ao processar pedido" });
+  }
 
-} catch (error) {
-  console.error("Erro detalhado:", error); 
-  return res.status(500).json({ error: "Erro ao processar pedido" });
-}
+  // Obter todos os registos
+  router.get("/food-entrie/user/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params; // Extrai o ID da URL
+
+      const { data, error } = await supabase
+
+        .from("food_entries")
+        .select("*") // Seleciona todas as colunas
+        .eq("user_id", userId); // Filtra apenas as linhas deste utilizador
+
+      if (error) throw error;
+
+      res.json(data); // Devolve a lista para o Angular
+    } catch (error) {
+      console.error("Erro ao buscar entradas:", error);
+      res.status(500).json({ error: "Erro ao buscar dados" });
+    }
+  });
 });
 
 export default router;
