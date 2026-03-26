@@ -1,0 +1,17 @@
+<form [formGroup]="goalsForm" (ngSubmit)="saveGoals()">
+  <label>Meta de Calorias (kcal)</label>
+  <input type="number" formControlName="calories" />
+
+  <label>Meta de Proteina (gr)</label>
+  <input type="number" formControlName="protein" />
+
+  <label>Meta de Hidratos de Carbono (gr)</label>
+  <input type="number" formControlName="carbs" />
+
+  <label>Meta de Gordura (gr)</label>
+  <input type="number" formControlName="fat" />
+
+  <label>Meta de Fibras (gr)</label>
+  <input type="number" formControlName="fiber" />
+  <button type="submit">Guardar Metas</button>
+</form>
