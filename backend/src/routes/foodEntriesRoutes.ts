@@ -6,7 +6,7 @@ import { supabase } from "../config/supabaseClient.js"; // Ligação à base de 
 const router = Router(); //  cria um mini-servidor
 
 // Criar um registo de alimento consumido
-router.post("/food-entries", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { user_id, food_id, grams } = req.body; // Receber dados do frontend
 
@@ -69,7 +69,7 @@ router.post("/food-entries", async (req, res) => {
   }
 })
   // Obter todos os registos
-  router.get("/food-entries/user/:userId", async (req, res) => {
+  router.get("/user/:userId", async (req, res) => {
     try {
       const { userId } = req.params; // Extrai o ID da URL
 
