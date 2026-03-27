@@ -67,9 +67,9 @@ router.post("/food-entries", async (req, res) => {
     console.error("Erro detalhado:", error);
     return res.status(500).json({ error: "Erro ao processar pedido" });
   }
-
+})
   // Obter todos os registos
-  router.get("/food-entrie/user/:userId", async (req, res) => {
+  router.get("/food-entries/user/:userId", async (req, res) => {
     try {
       const { userId } = req.params; // Extrai o ID da URL
 
@@ -87,6 +87,6 @@ router.post("/food-entries", async (req, res) => {
       res.status(500).json({ error: "Erro ao buscar dados" });
     }
   });
-});
+
 
 export default router;
