@@ -87,6 +87,9 @@ router.post("/", async (req, res) => {
       res.status(500).json({ error: "Erro ao buscar dados" });
     }
   });
-
+  
+ router.get("/teste", (req, res) => {
+  res.json({ mensagem: "A rota de food-entries está a funcionar!" });
+});
 
 export default router;
