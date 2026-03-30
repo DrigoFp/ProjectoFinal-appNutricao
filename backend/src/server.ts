@@ -23,6 +23,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors()); // Permite acessos externos, qualquer site ou aplicação pode tentar fazer pedidos ao servidor.
 app.use(express.json()); // Permite receber dados em formato JSON
 
+app.get("/check", (req, res) => {
+  res.json({ 
+    status: "online", 
+    directory: process.cwd(),
+    routes: "testadas" 
+  });
+});
+
 // Rota de teste
 app.get('/', (req, res) => {
   res.send('API Nutrição Ativa! 🌱');
