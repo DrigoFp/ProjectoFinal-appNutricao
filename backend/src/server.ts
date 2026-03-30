@@ -10,9 +10,8 @@ import cors from 'cors'; // ligação front back
 import dotenv from 'dotenv'; // le as variaveis de ambiente
 import testRoutes from "./routes/testRoutes.js";
 import foodEntriesRoutes from "./routes/foodEntriesRoutes.js";
-import { getDailyEntries } from './routes/getDailyEntries.js';
-import { createFoodEntry } from './routes/createFoodEntry.js';
-
+import { getDailyEntries } from "./routes/getDailyEntries.js";
+import { createFoodEntry } from "./routes/createFoodEntry.js";
 
 // Carrega as variáveis do ficheiro .env
 dotenv.config();
