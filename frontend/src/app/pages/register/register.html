@@ -1,0 +1,18 @@
+<div class="register-container">
+  <h2>Criar Nova Conta</h2>
+  
+  <input #email type="email" placeholder="Escolhe um email">
+  <input #pass type="password" placeholder="Cria uma password forte">
+
+  <button 
+    (click)="aoSubmeterRegisto(email.value, pass.value)"
+    [disabled]="carregando">
+    {{ carregando ? 'A criar conta...' : 'Registar e Entrar' }}
+  </button>
+
+  @if (carregando) {
+    <p>Estamos a preparar tudo para ti... 🚀</p>
+  }
+
+  <p>Já tens conta? <a routerLink="/login">Faz login aqui</a></p>
+</div>

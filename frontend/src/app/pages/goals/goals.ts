@@ -35,7 +35,7 @@ export class Goals implements OnInit {
   carregarDados() {
     const userId = '391467b0-6c0c-4090-b6c0-f74fd774826e'; // O ID que testaste
 
-    // 1. Chamamos a função que criaste no serviço Food
+    // 1. Chamamos a função que criei no serviço Food
     this.food.getEntries(userId).subscribe({
       // 2. Se tudo correr BEM, os dados chegam aqui:
       next: (dados) => {

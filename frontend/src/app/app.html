@@ -1,2 +1,16 @@
+<nav style="padding: 1rem; background: #eee; display: flex; justify-content: space-between;">
+  <strong>Minhas Metas 🎯</strong>
+
+  <div>
+    @if (user$ | async) {
+      <a routerLink="/goals" style="margin-right: 10px;">Metas</a>
+      <button (click)="sair()">Sair</button>
+    } @else {
+      <a routerLink="/login" style="margin-right: 10px;">Entrar</a>
+      <a routerLink="/register">Registar</a>
+    }
+  </div>
+</nav>
 
 <router-outlet></router-outlet>
+

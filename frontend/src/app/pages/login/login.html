@@ -1,0 +1,16 @@
+<div class="login-container">
+  <h2>Login</h2>
+  
+  <input #email type="email" placeholder="O teu email">
+  <input #pass type="password" placeholder="A tua password">
+
+  <button 
+    (click)="aoSubmeterLogin(email.value, pass.value)"
+    [disabled]="carregando">
+    {{ carregando ? 'A entrar...' : 'Entrar' }}
+  </button>
+
+  @if (carregando) {
+    <p>A validar os teus dados, aguarda um momento... ⏳</p>
+  }
+</div>
