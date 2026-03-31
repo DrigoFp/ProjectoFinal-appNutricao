@@ -1,17 +1,75 @@
-<form [formGroup]="goalsForm" (ngSubmit)="saveGoals()">
-  <label>Meta de Calorias (kcal)</label>
-  <input type="number" formControlName="calories" />
+<div class="goals-page-container">
+  
+  <section class="macros-section">
+    <h2>🍎 Definição de Macros Diários</h2>
+    
+    <form [formGroup]="goalsForm" (ngSubmit)="saveGoals()">
+      <div class="form-group">
+        <label>Meta de Calorias (kcal)</label>
+        <input type="number" formControlName="calories" />
+      </div>
 
-  <label>Meta de Proteina (gr)</label>
-  <input type="number" formControlName="protein" />
+      <div class="form-group">
+        <label>Meta de Proteína (g)</label>
+        <input type="number" formControlName="protein" />
+      </div>
 
-  <label>Meta de Hidratos de Carbono (gr)</label>
-  <input type="number" formControlName="carbs" />
+      <div class="form-group">
+        <label>Meta de Hidratos (g)</label>
+        <input type="number" formControlName="carbs" />
+      </div>
 
-  <label>Meta de Gordura (gr)</label>
-  <input type="number" formControlName="fat" />
+      <div class="form-group">
+        <label>Meta de Gordura (g)</label>
+        <input type="number" formControlName="fat" />
+      </div>
 
-  <label>Meta de Fibras (gr)</label>
-  <input type="number" formControlName="fiber" />
-  <button type="submit">Guardar Metas</button>
-</form>
+      <div class="form-group">
+        <label>Meta de Fibras (g)</label>
+        <input type="number" formControlName="fiber" />
+      </div>
+
+      <button type="submit" [disabled]="goalsForm.invalid" class="btn-save">
+        💾 Guardar Metas Nutricionais
+      </button>
+    </form>
+  </section>
+
+  <hr class="separator">
+
+  <section class="checklist-section">
+    <h2>🎯 Checklist de Hábitos</h2>
+
+    <div class="input-box">
+      <input 
+        type="text" 
+        [ngModel]="novaMeta()" 
+        (ngModelChange)="novaMeta.set($event)"
+        placeholder="Ex: Beber 3L de água hoje..."
+        (keyup.enter)="adicionar()">
+      <button (click)="adicionar()" [disabled]="!novaMeta()">Adicionar</button>
+    </div>
+
+    <div class="lista">
+      @if (carregando()) {
+        <p>A carregar tarefas...</p>
+      } @else {
+        @for (item of listaMetas(); track item.id) {
+          <div class="item-meta" [class.done]="item.concluida">
+            <div class="check-text">
+              <input 
+                type="checkbox" 
+                [checked]="item.concluida" 
+                (change)="alternarStatus(item)">
+              <span>{{ item.descricao }}</span>
+            </div>
+            <button class="btn-delete" (click)="excluir(item.id)">🗑️</button>
+          </div>
+        } @empty {
+          <p class="empty-msg">Ainda não tens tarefas para hoje. 💪</p>
+        }
+      }
+    </div>
+  </section>
+
+</div>

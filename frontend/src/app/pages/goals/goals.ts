@@ -1,63 +1,125 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Food } from '../../services/food';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MetasService } from '../../services/metas';
 
 @Component({
   selector: 'app-goals',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './goals.html',
   styleUrl: './goals.css',
-  standalone: true,
 })
 export class Goals implements OnInit {
-  private fb = inject(FormBuilder); // "Injectamos" o construtor de formulários
-  private food = inject(Food);
+  private fb = inject(FormBuilder);
+  private metasService = inject(MetasService);
 
-  // 1. Criamos a variável (gaveta) para guardar a lista de comida
-  foodEntries: any[] = [];
+  listaMetas = signal<any[]>([]);
+  novaMeta = signal('');
+  carregando = signal(false);
 
-  // Criamos o grupo de metas
   goalsForm: FormGroup = this.fb.group({
-    calories: [2550, [Validators.required, Validators.min(0)]], // Valor inicial padrão e o uso de validação sem ter de usar o if, graças ao angular
-    protein: [135, [Validators.required, Validators.min(0)]],
-    carbs: [300, [Validators.required, Validators.min(0)]],
-    fat: [80, [Validators.required, Validators.min(0)]],
-    fiber: [35, [Validators.required, Validators.min(0)]],
+    calories: [0, [Validators.required, Validators.min(0)]],
+    protein: [0, [Validators.required, Validators.min(0)]],
+    carbs: [0, [Validators.required, Validators.min(0)]],
+    fat: [0, [Validators.required, Validators.min(0)]],
+    fiber: [0, [Validators.required, Validators.min(0)]],
   });
 
-  // O "despertador" do componente: corre assim que o ecrã carrega
   ngOnInit() {
-    console.log('O componente Goals acordou! Vou pedir os dados ao serviço.');
-    this.carregarDados();
-  } // <--- FECHAMOS o ngOnInit aqui!
+    this.carregarTudo();
+  }
 
-  // Função dedicada a pedir os dados ao serviço
-  carregarDados() {
-    const userId = '391467b0-6c0c-4090-b6c0-f74fd774826e'; // O ID que testaste
+  async carregarTudo() {
+    this.carregando.set(true);
 
-    // 1. Chamamos a função que criei no serviço Food
-    this.food.getEntries(userId).subscribe({
-      // 2. Se tudo correr BEM, os dados chegam aqui:
-      next: (dados) => {
-        this.foodEntries = dados as any[];
-        console.log('Sucesso! Recebemos isto do Render:', this.foodEntries);
-      },
-      // 3. Se houver um ERRO (ex: Render desligado), ele avisa aqui:
-      error: (erro) => {
-        console.error('Ops! Algo falhou na ligação ao Render:', erro);
-      }
-    });
-  } // <--- FECHAMOS o carregarDados aqui!
-
-  // Esta função é chamada quando clico no botão de Submit
-  saveGoals() {
-    if (this.goalsForm.valid) {
-      // Se todos os validadores (required, min) passarem:
-      console.log('Dados prontos para o Supabase:', this.goalsForm.value);
-      alert('Metas guardadas com sucesso!');
-    } else {
-      // Se faltar algum campo ou houver números negativos:
-      alert('Por favor, preenche todos os campos correctamente.');
+    // 1. Carregar Checklist (Sempre funciona se houver metas)
+    try {
+      const metas = await this.metasService.listarMetas();
+      this.listaMetas.set(metas || []);
+    } catch (e) {
+      console.error('Erro checklist:', e);
     }
-  } 
+
+    // 2. Carregar Macros de hoje
+    try {
+      const hoje = new Date().toISOString().split('T')[0];
+      const { data: macros } = await this.metasService.buscarMacrosPorDia(hoje);
+
+      if (macros) {
+        this.goalsForm.patchValue({
+          calories: macros.kcal_goal,
+          protein: macros.protein_goal,
+          carbs: macros.carbs_goal,
+          fat: macros.fat_goal,
+          fiber: macros.fiber_goal,
+        });
+      }
+    } catch (e) {
+      console.error('Erro macros:', e);
+    }
+
+    this.carregando.set(false);
+  }
+
+  async adicionar() {
+    const descricao = this.novaMeta().trim();
+    if (!descricao) return;
+
+    try {
+      this.carregando.set(true);
+      console.log('A tentar adicionar tarefa:', descricao);
+
+      await this.metasService.adicionarMeta(descricao);
+
+      this.novaMeta.set(''); // Limpa o input
+      await this.carregarTudo(); // Força a atualização da lista
+
+      console.log('Tarefa adicionada com sucesso!');
+    } catch (error) {
+      console.error('Erro ao adicionar meta:', error);
+      alert('Erro ao guardar a tarefa. Verifica a consola.');
+    } finally {
+      this.carregando.set(false);
+    }
+  }
+
+// No goals.ts, dentro da classe Goals:
+
+async alternarStatus(meta: any) {
+  try {
+    // 1. Chamamos o serviço para atualizar no Supabase
+    await this.metasService.atualizarMeta(meta.id, !meta.concluida);
+    
+    // 2. Recarregamos os dados para a lista atualizar no ecrã
+    await this.carregarTudo(); 
+    
+    console.log('Status da meta atualizado!');
+  } catch (error) {
+    console.error('Erro ao atualizar status:', error);
+    alert('Não foi possível atualizar a tarefa.');
+  }
+}
+  
+  async excluir(id: string) {
+    await this.metasService.apagarMeta(id);
+    this.carregarTudo();
+  }
+
+  async saveGoals() {
+    if (this.goalsForm.valid) {
+      try {
+        await this.metasService.guardarMacros(this.goalsForm.value);
+        alert('✅ Guardado!');
+      } catch (e) {
+        alert('❌ Erro ao guardar');
+      }
+    }
+  }
 }
