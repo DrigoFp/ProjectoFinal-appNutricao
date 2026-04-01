@@ -1,1 +1,93 @@
 /* You can add global styles to this file, and also import other style files */
+/* No styles.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Altura total do browser */
+  width: 100%;
+}
+
+/* O Angular coloca tudo dentro de app-root */
+app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+:host {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%; /* Garante que o componente ocupa a altura toda */
+}
+
+.main-auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%; /* O container agora ocupa 100% do componente (:host) */
+  background-color: #f4f7f6;
+}
+
+.auth-card{
+    background-color: #2b8d98;
+    padding: 50px; /*Cria um espaço interno para que o texto não fique colado às bordas */
+    border-radius: 20px; /* Arredonda os cantos*/
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /*Adiciona uma sombra para dar profundidade*/
+    width: 100%;
+    max-width: 400px; /* Não deixa a caixa ficar gigante em ecrãs grandes */
+    text-align: center; /* Centra o texto e títulos lá dentro */
+}
+
+/* Seleciona o formulário dentro do card */
+.auth-card form {
+  display: flex;
+  flex-direction: column; /* Empilha os elementos verticalmente*/
+  gap: 15px;              /* Cria um espaço igual entre cada elemento*/
+  width: 100%;            /* Garante que ocupam a largura da caixa */
+}
+
+input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Cantos suaves ☁️ */
+  outline: none;      /* Remove aquela borda azul feia ao clicar */
+}
+
+button {
+  padding: 12px;
+  background-color: #1a5f66; /* Um tom mais escuro que o card para contraste */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+/* Quando o utilizador clica no input para escrever */
+.auth-card input:focus {
+  outline: none;             /* Remove a linha padrão do browser */
+  border: 2px solid #ffffff; /* Cria uma borda branca bem visível */
+  background-color: #34a5b2; /* Muda ligeiramente o fundo para dar feedback */
+  transition: 0.3s;          /* Faz a mudança de forma suave, não brusca */
+}
+.forca-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-top: 10px;
+  overflow: hidden; /* Garante que a barra interna não sai das bordas */
+}
+
+.forca-bar {
+  height: 100%;
+  transition: width 0.3s ease-in-out, background-color 0.3s; /* Animação suave! ✨ */
+}
+
+.erro-texto {
+  color: #ff4d4d;
+  font-size: 12px;
+  margin-top: 5px;
+}

@@ -1,18 +1,36 @@
-<div class="register-container">
-  <h2>Criar Nova Conta</h2>
-  
-  <input #email type="email" placeholder="Escolhe um email">
-  <input #pass type="password" placeholder="Cria uma password forte">
+<div class="main-auth-container">
+  <div class="auth-card">
+    <h2>Criar Nova Conta</h2>
 
-  <button 
-    (click)="aoSubmeterRegisto(email.value, pass.value)"
-    [disabled]="carregando">
-    {{ carregando ? 'A criar conta...' : 'Registar e Entrar' }}
-  </button>
+    <form (submit)="aoSubmeterRegisto(email.value, pass.value); $event.preventDefault()">
+      <input #email type="email" placeholder="Escolhe um email" />
+      <input
+        #pass
+        type="password"
+        autocomplete="new-password"
+        placeholder="Cria uma password forte com 8 caracteres"
+        (input)="verificarForca(pass.value)"
+      />
 
-  @if (carregando) {
-    <p>Estamos a preparar tudo para ti... 🚀</p>
-  }
+      <div class="forca-bar-container">
+        <div
+          class="forca-bar"
+          [style.width]="larguraBarra"
+          [style.background-color]="corBarra"
+        ></div>
+      </div>
+      <p [style.color]="corBarra">{{ textoForca }}</p>
 
-  <p>Já tens conta? <a routerLink="/login">Faz login aqui</a></p>
+      @if (textoForca === 'Fraca' || (textoForca === 'Média' && !temNumero)) {
+        <p class="erro">A password precisa de ter pelo menos 6 caracteres e um número!</p>
+      }
+      <button [disabled]="textoForca === 'Fraca' || textoForca === '' || !temNumero || carregando">
+        {{ carregando ? 'A criar conta...' : 'Registar e Entrar' }}
+      </button>
+    </form>
+
+    @if (carregando) {
+      <p>Estamos a preparar tudo para ti... 🚀</p>
+    }
+  </div>
 </div>
