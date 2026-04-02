@@ -1,0 +1,19 @@
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa a altura toda do ecrã */
+}
+
+.main-content {
+  flex: 1; /* Faz o conteúdo central "empurrar" o footer para baixo */
+  padding-top: 20px; /* Espaço para não colar no header */
+  background-color: #f4f7f6; /* Uma cor de fundo suave para destacar os cards */
+}
+
+.app-footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.8rem;
+}

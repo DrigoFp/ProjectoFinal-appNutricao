@@ -8,7 +8,7 @@ export const authGuard = () => {
   const router = inject(Router);
 
   // Escuta o (userState)
-  return authService.currentUser.pipe(
+  return authService.user$.pipe(
     map(user => {
       if (user) {
         return true; // Ve se existe useres, se sim podem logar

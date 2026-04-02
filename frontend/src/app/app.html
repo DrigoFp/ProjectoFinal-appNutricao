@@ -1,16 +1,9 @@
-<nav style="padding: 1rem; background: #eee; display: flex; justify-content: space-between;">
-  <strong>Minhas Metas 🎯</strong>
+<div style="display: flex; flex-direction: column; min-height: 100vh;">
+  <app-header></app-header>
 
-  <div>
-    @if (user$ | async) {
-      <a routerLink="/goals" style="margin-right: 10px;">Metas</a>
-      <button (click)="sair()">Sair</button>
-    } @else {
-      <a routerLink="/login" style="margin-right: 10px;">Entrar</a>
-      <a routerLink="/register">Registar</a>
-    }
-  </div>
-</nav>
+  <main style="flex: 1; padding-bottom: 40px;">
+    <router-outlet></router-outlet>
+  </main>
 
-<router-outlet></router-outlet>
-
+  <app-footer></app-footer>
+</div>

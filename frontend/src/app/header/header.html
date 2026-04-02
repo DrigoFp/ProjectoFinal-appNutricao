@@ -1,0 +1,17 @@
+<nav class="navbar">
+  <div class="nav-brand">
+    <strong>Minhas Metas 🎯</strong>
+  </div>
+
+  <div class="nav-links">
+    @if (user$ | async) {
+      <a routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
+      <a routerLink="/resumo" routerLinkActive="active-link">Resumo</a>
+      <a routerLink="/goals" routerLinkActive="active-link">Metas</a>
+      <button (click)='sair()' class="btn-sair">Sair</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active-link">Entrar</a>
+      <a routerLink="/register" routerLinkActive="active-link">Registar</a>
+    }
+  </div>
+</nav>

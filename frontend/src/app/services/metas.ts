@@ -78,5 +78,71 @@ async adicionarMeta(descricao: string) {
     return await this.supabase.from('daily_goals').select('*').eq('day', data).maybeSingle();
   }
 
-  
+  async buscarHistoricoResumo() {
+    // 1. Ir buscar o utilizador para filtrar apenas os dados DELE
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Utilizador não autenticado');
+
+    // 2. Procurar na tabela daily_summary
+    const { data, error } = await this.supabase
+      .from('daily_summary') 
+      .select('*')
+      .eq('user_id', user.id)
+      .order('date', { ascending: false }); // Ordenar do mais recente para o mais antigo
+
+    if (error) throw error;
+    return data;
+  }
+
+async adicionarAlimento(dados: any) {
+  const { data: { user } } = await this.supabase.auth.getUser();
+  if (!user) throw new Error('Utilizador não autenticado');
+
+  const { error } = await this.supabase
+    .from('food_entries')
+    .insert([{
+      user_id: user.id,
+      date: new Date().toISOString().split('T')[0], // Grava a data de hoje (YYYY-MM-DD)
+      total_kcal: dados.kcal,
+      total_protein: dados.protein,
+      total_carbs: dados.carbs,
+      total_fat: dados.fat,
+      total_fiber: dados.fiber,
+      grams: dados.grams,
+      food_id: dados.food_id || null // Se tiveres uma tabela de alimentos fixa
+    }]);
+
+  if (error) throw error;
+}
+async buscarTotaisDoDia() {
+  const { data: { user } } = await this.supabase.auth.getUser();
+  const hoje = new Date().toISOString().split('T')[0];
+
+  const { data, error } = await this.supabase
+    .from('food_entries')
+    .select('total_kcal, total_protein, total_carbs, total_fat, total_fiber')
+    .eq('user_id', user?.id)
+    .eq('date', hoje);
+
+  if (error) return null;
+
+  // Somar todos os registos do dia
+  return data.reduce((acc, curr) => ({
+    kcal: acc.kcal + (curr.total_kcal || 0),
+    protein: acc.protein + (curr.total_protein || 0),
+    carbs: acc.carbs + (curr.total_carbs || 0),
+    fat: acc.fat + (curr.total_fat || 0),
+    fiber: acc.fiber + (curr.total_fiber || 0)
+  }), { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 });
+}
+
+async listarAlimentosBase() {
+  const { data, error } = await this.supabase
+    .from('foods')
+    .select('*')
+    .order('name', { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
 }

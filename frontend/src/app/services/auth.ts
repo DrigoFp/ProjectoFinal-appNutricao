@@ -28,7 +28,7 @@ export class AuthService {
     this.userState.next(data.user);
   }
 
-  get currentUser() {
+  get user$() {
     return this.userState.asObservable();
   }
 
