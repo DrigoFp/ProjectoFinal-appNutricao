@@ -1,5 +1,4 @@
 <div class="dashboard-container">
-
   <div class="header">
     <h2>{{ saudacao }}, Rodrigo! 👋</h2>
     <p>Aqui está o teu resumo de hoje.</p>
@@ -14,9 +13,11 @@
         </div>
 
         <div class="progress-bar">
-          <div class="progress-fill"
-               [style.width.%]="(item.atual / (item.objetivo || 1)) * 100"
-               [style.background-color]="item.cor"></div>
+          <div
+            class="progress-fill"
+            [style.width.%]="(item.atual / (item.objetivo || 1)) * 100"
+            [style.background-color]="item.cor"
+          ></div>
         </div>
       </div>
     }
@@ -27,6 +28,8 @@
       {{ exibirFormAlimento ? '✕ Fechar' : '+ Alimento' }}
     </button>
 
+    <button type="button" class="btn btn-blue-outline" routerLink="/history">📅 Histórico</button>
+
     <button type="button" class="btn btn-red-outline" (click)="onApagarUltimo()">
       🗑️ Apagar Último
     </button>
@@ -35,11 +38,13 @@
   <div class="card form-card" *ngIf="exibirFormAlimento">
     <h3>Registar Alimento</h3>
 
-    <div class="input-group" style="margin-bottom: 12px;">
-      <input type="text" 
-             [(ngModel)]="searchTerm" 
-             placeholder="🔍 Pesquisar alimento..." 
-             class="input">
+    <div class="input-group" style="margin-bottom: 12px">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="🔍 Pesquisar alimento..."
+        class="input"
+      />
     </div>
 
     <select [(ngModel)]="selectedFoodId" name="food" class="input" (change)="calcularValores()">
@@ -49,39 +54,41 @@
       }
     </select>
 
-    <div class="grid-2" style="margin-top: 15px;">
+    <div class="grid-2" style="margin-top: 15px">
       <div class="input-group">
         <small>Gramas</small>
-        <input type="number" [(ngModel)]="grams" (input)="calcularValores()" class="input">
+        <input type="number" [(ngModel)]="grams" (input)="calcularValores()" class="input" />
       </div>
 
       <div class="input-group">
         <small>Kcal</small>
-        <input type="number" [(ngModel)]="kcal" class="input readonly" readonly>
+        <input type="number" [(ngModel)]="kcal" class="input readonly" readonly />
       </div>
 
       <div class="input-group">
         <small>Proteína (g)</small>
-        <input type="number" [(ngModel)]="protein" class="input readonly" readonly>
+        <input type="number" [(ngModel)]="protein" class="input readonly" readonly />
       </div>
       <div class="input-group">
         <small>Carbs (g)</small>
-        <input type="number" [(ngModel)]="carbs" class="input readonly" readonly>
+        <input type="number" [(ngModel)]="carbs" class="input readonly" readonly />
       </div>
       <div class="input-group">
         <small>Gordura (g)</small>
-        <input type="number" [(ngModel)]="fat" class="input readonly" readonly>
+        <input type="number" [(ngModel)]="fat" class="input readonly" readonly />
       </div>
       <div class="input-group">
         <small>Fibra (g)</small>
-        <input type="number" [(ngModel)]="fiber" class="input readonly" readonly>
+        <input type="number" [(ngModel)]="fiber" class="input readonly" readonly />
       </div>
     </div>
 
-    <button type="button" 
-            class="btn btn-green" 
-            [disabled]="!selectedFoodId"
-            (click)="onSalvarAlimento()">
+    <button
+      type="button"
+      class="btn btn-green"
+      [disabled]="!selectedFoodId"
+      (click)="onSalvarAlimento()"
+    >
       GRAVAR REGISTO
     </button>
   </div>
@@ -91,7 +98,6 @@
 
     @for (registo of registosHoje; track trackByRegisto($index, registo)) {
       <div class="registo-item">
-
         <div class="registo-info">
           <span class="registo-nome">
             {{ registo.foods?.name || 'Alimento #' + registo.food_id }}
@@ -102,17 +108,17 @@
         <div class="registo-actions">
           <span class="kcal">{{ registo.total_kcal }} kcal</span>
 
-          <button type="button" 
-                  class="btn-delete-small"
-                  (click)="$event.stopPropagation(); onApagarRegisto(registo.id)">
+          <button
+            type="button"
+            class="btn-delete-small"
+            (click)="$event.stopPropagation(); onApagarRegisto(registo.id)"
+          >
             ✕
           </button>
         </div>
-
       </div>
     } @empty {
       <p class="empty">Ainda não registaste nada hoje. 💪</p>
     }
   </div>
-
 </div>

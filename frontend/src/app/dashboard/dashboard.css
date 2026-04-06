@@ -173,3 +173,19 @@
 .btn-delete-small:hover {
   background-color: rgba(255, 77, 77, 0.1);
 }
+
+.btn-blue-outline {
+  background-color: transparent;
+  border: 2px solid #3498db;
+  color: #3498db;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-blue-outline:hover {
+  background-color: #3498db;
+  color: white;
+}
