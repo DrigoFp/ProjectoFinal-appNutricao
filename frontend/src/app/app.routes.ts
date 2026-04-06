@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth-guard'; // Garante que o nome do ficheiro está correto (auth-guard.ts)
-import { Perfil } from './perfil/perfil';
+import { authGuard } from './auth-guard'; 
 
 export const routes: Routes = [
-  // 1. Redirecionamento Inicial: Se abrir a raiz, vai para o login
+  // Redirecionamento Inicial
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // 2. Páginas Públicas (Sem proteção)
+  // Páginas Públicas
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login').then((m) => m.Login),
@@ -16,37 +15,33 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/register/register').then((m) => m.Register),
   },
 
-  // 3. Páginas Protegidas (Todas usam o canActivate: [authGuard])
+  // Páginas Protegidas
   {
     path: 'dashboard',
     loadComponent: () => import('./dashboard/dashboard').then((m) => m.Dashboard),
     canActivate: [authGuard],
   },
-
-  { path: 'metas', component: Perfil, canActivate: [authGuard] },
-  
   {
     path: 'metas',
     loadComponent: () => import('./perfil/perfil').then((m) => m.Perfil),
     canActivate: [authGuard],
   },
-
   {
     path: 'resumo',
     loadComponent: () => import('./pages/resumo/resumo').then((m) => m.Resumo),
     canActivate: [authGuard],
   },
-
   {
-    path: 'goals', // Esta é a tua página de checklist de tarefas
+    path: 'goals',
     loadComponent: () => import('./pages/goals/goals').then((m) => m.Goals),
     canActivate: [authGuard],
   },
+  {
+    path: 'history',
+    loadComponent: () => import('./pages/history/history').then(m => m.HistoryComponent),
+    canActivate: [authGuard]
+  },
 
-{
-  path: 'history',
-  loadComponent: () => import('./pages/history/history').then(m => m.HistoryComponent),
-  canActivate: [authGuard]
-},
+  // Rota de Erro (Wildcard) - Manda para o login se o URL for inválido
   { path: '**', redirectTo: 'login' },
 ];
