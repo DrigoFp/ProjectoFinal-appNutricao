@@ -186,6 +186,26 @@ async buscarTotaisDoDia() {
     return data;
   }
 
+async buscarHistorico() {
+  const user = await this.getSessionUser();
+  if (!user) return [];
+
+  const { data, error } = await this.supabase
+    .from('food_entries')
+    .select(`
+      *,
+      foods ( name )
+    `) // Isto traz o nome do alimento automaticamente se as tabelas estiverem ligadas
+    .eq('user_id', user.id)
+    .order('date', { ascending: false }); // Do mais recente para o mais antigo
+
+  if (error) {
+    console.error('Erro ao buscar histórico:', error);
+    return [];
+  }
+  return data;
+}
+
   async logout() {
     await this.supabase.auth.signOut();
     localStorage.clear();

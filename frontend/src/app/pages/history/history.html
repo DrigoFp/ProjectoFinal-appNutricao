@@ -1,0 +1,23 @@
+<div class="history-container">
+  <h2>Meu Histórico 🗓️</h2>
+
+  @for (data of datasUnicas; track data) {
+    <div class="history-card">
+      <h3 class="date-header">{{ data | date:'dd/MM/yyyy' }}</h3>
+      
+      <div class="items-list">
+        @for (registo of getRegistosPorData(data); track registo.id) {
+          <div class="item-row">
+            <span>{{ registo.foods?.name || 'Alimento' }}</span>
+            <span class="calories">{{ registo.total_kcal }} kcal</span>
+            <small>{{ registo.grams }}g</small>
+          </div>
+        }
+      </div>
+    </div>
+  } @empty {
+    <p>Ainda não tens histórico de refeições.</p>
+  }
+  
+  <button class="btn" routerLink="/dashboard">Voltar ao Dashboard</button>
+</div>
