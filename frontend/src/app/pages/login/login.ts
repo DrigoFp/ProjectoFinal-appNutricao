@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -23,7 +24,7 @@ export class Login {
 
     try {
       await this.authService.login(email, pass);
-      this.router.navigate(['/goals']);
+      this.router.navigate(['/dashboard']);
     } catch (error) {
       console.error('Erro:', error);
       alert('Dados incorretos!');

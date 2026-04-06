@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { BehaviorSubject } from 'rxjs';
+import { supabase } from '../supabase.client';
 
 @Injectable({
   providedIn: 'root',
@@ -9,15 +10,23 @@ export class AuthService {
   private supabase: SupabaseClient; // vai guardar a ligação, o cliente;
   private userState = new BehaviorSubject<User | null>(null); // guarda o utilizador ou null = estado inicial da app
 
-  constructor() {
-    this.supabase = createClient(
-      // Inicializa a ligação ao Supabase
-      'https://kctjcjzeezvuuwgfcmxs.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjdGpjanplZXp2dXV3Z2ZjbXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNjIzMTcsImV4cCI6MjA4OTgzODMxN30.npnTG26uLteNro2APmmZG5DQsvWN25-R7M3u36OoW_8',
-    );
+constructor() {
+  this.supabase = supabase;
 
-    this.checkUser(); // Verifica se alguém está logado (localStorage)
-  }
+  // 1. Verifica sessão inicial
+  this.checkUser();
+
+  // 2. Escuta mudanças de sessão (login, logout, refresh)
+  this.supabase.auth.onAuthStateChange((event, session) => {
+    this.userState.next(session?.user ?? null);
+  });
+}
+
+
+async getSessionUser() {
+  const { data: { user } } = await this.supabase.auth.getUser();
+  return user;
+}
 
   // funcção que verifica se já existe user logado no localsotrage
   private async checkUser() {

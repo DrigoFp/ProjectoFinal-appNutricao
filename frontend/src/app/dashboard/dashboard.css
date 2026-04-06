@@ -1,29 +1,175 @@
-.navbar {
-  padding: 1rem 2rem;
-  background: #ffffff;
+/* ============================
+   LAYOUT GERAL
+============================ */
+.dashboard-container {
+  background-color: #f8fafc;
+  padding: 20px;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+.header h2 {
+  color: #1e293b;
+  margin: 0;
+}
+
+.header p {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* ============================
+   CARTÕES
+============================ */
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.form-card {
+  border-top: 4px solid #10b981;
+}
+
+/* ============================
+   METAS DIÁRIAS
+============================ */
+.meta-item {
+  margin-bottom: 15px;
+}
+
+.meta-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.meta-nome {
+  font-weight: bold;
+}
+
+.progress-bar {
+  background: #f1f5f9;
+  height: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+/* ============================
+   BOTÕES
+============================ */
+.button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn {
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-green {
+  background: #10b981;
+  color: white;
+}
+
+.btn-blue {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-red {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-red-outline {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+}
+
+/* ============================
+   INPUTS
+============================ */
+.input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.readonly {
+  background: #f9f9f9;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.input-group small {
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+/* ============================
+   LISTA DE REGISTOS
+============================ */
+.registo-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+  
 }
 
-.nav-links a {
-  margin-right: 15px;
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
+
+.registo-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.nav-links a.active-link {
-  color: #2ecc71; 
-  border-bottom: 2px solid #2ecc71;
+.registo-nome {
+  font-weight: bold;
+  color: #1e293b;
 }
 
-.btn-sair {
-  background: #ff4d4d;
-  color: white;
+.kcal {
+  font-weight: bold;
+  color: #10b981;
+}
+
+.empty {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 10px 0;
+}
+.btn-delete-small {
+  background: none;
   border: none;
-  padding: 5px 12px;
-  border-radius: 4px;
+  color: #ff4d4d;
   cursor: pointer;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.btn-delete-small:hover {
+  background-color: rgba(255, 77, 77, 0.1);
 }

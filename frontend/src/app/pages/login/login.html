@@ -1,17 +1,22 @@
-<div class="main-auth-container"> <div class="auth-card"> <h2>Login</h2>
+<div class="main-auth-container">
+  <div class="auth-card">
+    <h2>Login</h2>
     
     <form (submit)="aoSubmeterLogin(email.value, pass.value); $event.preventDefault()">
-      <input #email type="email" placeholder="O teu email">
-      <input #pass type="password" placeholder="A tua password">
+      <input #email type="email" placeholder="O teu email" required>
+      <input #pass type="password" placeholder="A tua password" required>
 
-      <button [disabled]="carregando">
+      <button type="submit" [disabled]="carregando">
         {{ carregando ? 'A entrar...' : 'Entrar' }}
       </button>
     </form>
+
+    <div class="auth-footer">
+      <p>Ainda não tens conta? <a routerLink="/register">Regista-te aqui</a></p>
+    </div>
 
     @if (carregando) {
       <p class="loading-msg">A validar os teus dados... ⏳</p>
     }
   </div>
-
 </div>

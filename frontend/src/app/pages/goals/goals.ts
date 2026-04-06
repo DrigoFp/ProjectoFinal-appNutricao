@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MetasService } from '../../services/metas';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-goals',
@@ -19,11 +20,13 @@ import { MetasService } from '../../services/metas';
 export class Goals implements OnInit {
   private fb = inject(FormBuilder);
   private metasService = inject(MetasService);
+  private router = inject(Router);
 
   listaMetas = signal<any[]>([]);
   novaMeta = signal('');
   carregando = signal(false);
 
+  // Formulário reativo para as metas de macros do dia
   goalsForm: FormGroup = this.fb.group({
     calories: [0, [Validators.required, Validators.min(0)]],
     protein: [0, [Validators.required, Validators.min(0)]],
@@ -36,37 +39,41 @@ export class Goals implements OnInit {
     this.carregarTudo();
   }
 
+private getHojeFormatado(): string {
+    return new Date().toLocaleDateString('en-CA');
+  }
+
   async carregarTudo() {
     this.carregando.set(true);
 
-    // 1. Carregar Checklist (Sempre funciona se houver metas)
     try {
+      // 1. Carregar Checklist (Tarefas)
       const metas = await this.metasService.listarMetas();
       this.listaMetas.set(metas || []);
-    } catch (e) {
-      console.error('Erro checklist:', e);
-    }
 
-    // 2. Carregar Macros de hoje
-    try {
-      const hoje = new Date().toISOString().split('T')[0];
-      const { data: macros } = await this.metasService.buscarMacrosPorDia(hoje);
-
-      if (macros) {
+      // 2. Carregar Macros específicas de hoje (Tabela daily_goals)
+      const hoje = this.getHojeFormatado();
+      const response = await this.metasService.buscarMacrosPorDia(hoje);
+      
+      // Mapeamento: Ajustamos para os nomes reais da tua tabela (kcal_goal, etc)
+      if (response && response.data) {
+        const macros = response.data;
         this.goalsForm.patchValue({
-          calories: macros.kcal_goal,
-          protein: macros.protein_goal,
-          carbs: macros.carbs_goal,
-          fat: macros.fat_goal,
-          fiber: macros.fiber_goal,
+          calories: macros.kcal_goal || 0,
+          protein: macros.protein_goal || 0,
+          carbs: macros.carbs_goal || 0,
+          fat: macros.fat_goal || 0,
+          fiber: macros.fiber_goal || 0,
         });
       }
     } catch (e) {
-      console.error('Erro macros:', e);
+      console.error('Erro ao carregar dados:', e);
+    } finally {
+      this.carregando.set(false);
     }
-
-    this.carregando.set(false);
   }
+
+  // --- Lógica da Checklist ---
 
   async adicionar() {
     const descricao = this.novaMeta().trim();
@@ -74,52 +81,69 @@ export class Goals implements OnInit {
 
     try {
       this.carregando.set(true);
-      console.log('A tentar adicionar tarefa:', descricao);
-
       await this.metasService.adicionarMeta(descricao);
-
-      this.novaMeta.set(''); // Limpa o input
-      await this.carregarTudo(); // Força a atualização da lista
-
-      console.log('Tarefa adicionada com sucesso!');
+      this.novaMeta.set(''); 
+      // Recarregar apenas a lista de metas para ser mais rápido
+      const metas = await this.metasService.listarMetas();
+      this.listaMetas.set(metas || []);
     } catch (error) {
       console.error('Erro ao adicionar meta:', error);
-      alert('Erro ao guardar a tarefa. Verifica a consola.');
+      alert('Erro ao guardar a tarefa.');
     } finally {
       this.carregando.set(false);
     }
   }
 
-// No goals.ts, dentro da classe Goals:
-
-async alternarStatus(meta: any) {
-  try {
-    // 1. Chamamos o serviço para atualizar no Supabase
-    await this.metasService.atualizarMeta(meta.id, !meta.concluida);
-    
-    // 2. Recarregamos os dados para a lista atualizar no ecrã
-    await this.carregarTudo(); 
-    
-    console.log('Status da meta atualizado!');
-  } catch (error) {
-    console.error('Erro ao atualizar status:', error);
-    alert('Não foi possível atualizar a tarefa.');
-  }
-}
-  
-  async excluir(id: string) {
-    await this.metasService.apagarMeta(id);
-    this.carregarTudo();
-  }
-
-  async saveGoals() {
-    if (this.goalsForm.valid) {
-      try {
-        await this.metasService.guardarMacros(this.goalsForm.value);
-        alert('✅ Guardado!');
-      } catch (e) {
-        alert('❌ Erro ao guardar');
-      }
+  async alternarStatus(meta: any) {
+    try {
+      const novoStatus = !meta.concluida;
+      await this.metasService.atualizarMetaChecklist(meta.id, novoStatus);
+      // Atualização local simples para evitar flicker
+      this.listaMetas.update(prev => 
+        prev.map(m => m.id === meta.id ? { ...m, concluida: novoStatus } : m)
+      );
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
     }
   }
+  
+  async excluir(id: string) {
+    if (!confirm('Eliminar esta tarefa?')) return;
+    try {
+      await this.metasService.apagarMeta(id);
+      this.listaMetas.update(prev => prev.filter(m => m.id !== id));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+async saveGoals() {
+  if (this.goalsForm.valid) {
+    try {
+      this.carregando.set(true);
+      
+      // 1. Envia para a base de dados (Supabase)
+      await this.metasService.guardarMacros(this.goalsForm.value);
+
+      this.metasService.metasAtuais.set({
+        kcal: this.goalsForm.value.calories,
+        protein: this.goalsForm.value.protein,
+        carbs: this.goalsForm.value.carbs,
+        fat: this.goalsForm.value.fat,
+        fiber: this.goalsForm.value.fiber
+      });
+      
+      alert('Metas diárias atualizadas! ✅');
+      
+      // 3. Redireciona para o dashboard
+      this.router.navigate(['/dashboard']); 
+      
+    } catch (e) {
+      console.error('Erro ao guardar metas:', e);
+      alert('Erro ao guardar metas.');
+    } finally {
+      this.carregando.set(false);
+    }
+  }
+}
 }

@@ -1,0 +1,45 @@
+<div class="container" style="max-width: 500px; margin: 40px auto; padding: 20px;">
+  <h2 style="text-align: center; color: #1e293b;">🎯 Configurar Minhas Metas</h2>
+
+  @if (carregando) {
+    <p style="text-align: center;">A carregar dados...</p>
+  } @else {
+    <div style="display: flex; flex-direction: column; gap: 15px; background: white; padding: 25px; border-radius: 12px; shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
+      
+      <div>
+        <label>Nome:</label>
+        <input type="text" [(ngModel)]="perfil.full_name" class="form-control" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div>
+          <label>Calorias (kcal):</label>
+          <input type="number" [(ngModel)]="perfil.goal_calories" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+        <div>
+          <label>Proteína (g):</label>
+          <input type="number" [(ngModel)]="perfil.goal_protein" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+        <div>
+          <label>Carbs:</label>
+          <input type="number" [(ngModel)]="perfil.goal_carbs" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+        <div>
+          <label>Gordura:</label>
+          <input type="number" [(ngModel)]="perfil.goal_fat" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+        <div>
+          <label>Fibra:</label>
+          <input type="number" [(ngModel)]="perfil.goal_fiber" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+      </div>
+
+      <button (click)="guardarAlteracoes()" style="background: #10b981; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+        Guardar Alterações 💾
+      </button>
+    </div>
+  }
+</div>

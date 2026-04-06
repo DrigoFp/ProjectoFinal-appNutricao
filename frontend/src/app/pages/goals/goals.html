@@ -1,72 +1,95 @@
-<div class="goals-page-container">
+<div class="goals-page-container" style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: sans-serif; color: #1e293b;">
   
-  <section class="macros-section">
-    <h2>🍎 Definição de Macros Diários</h2>
+  <section class="macros-section" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px;">
+    <h2 style="font-size: 1.2rem; margin-top: 0; color: #1e293b; display: flex; align-items: center; gap: 10px;">
+      🍎 Definição de Macros Diários
+    </h2>
     
-    <form [formGroup]="goalsForm" (ngSubmit)="saveGoals()">
-      <div class="form-group">
-        <label>Meta de Calorias (kcal)</label>
-        <input type="number" formControlName="calories" />
+    <form [formGroup]="goalsForm" (ngSubmit)="saveGoals()" style="display: flex; flex-direction: column; gap: 15px;">
+      <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+        <label style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Meta de Calorias (kcal)</label>
+        <input type="number" formControlName="calories" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;" />
       </div>
 
-      <div class="form-group">
-        <label>Meta de Proteína (g)</label>
-        <input type="number" formControlName="protein" />
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+          <label style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Proteína (g)</label>
+          <input type="number" formControlName="protein" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;" />
+        </div>
+
+        <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+          <label style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Hidratos (g)</label>
+          <input type="number" formControlName="carbs" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;" />
+        </div>
+
+        <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+          <label style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Gordura (g)</label>
+          <input type="number" formControlName="fat" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;" />
+        </div>
+
+        <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+          <label style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Fibras (g)</label>
+          <input type="number" formControlName="fiber" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;" />
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>Meta de Hidratos (g)</label>
-        <input type="number" formControlName="carbs" />
-      </div>
-
-      <div class="form-group">
-        <label>Meta de Gordura (g)</label>
-        <input type="number" formControlName="fat" />
-      </div>
-
-      <div class="form-group">
-        <label>Meta de Fibras (g)</label>
-        <input type="number" formControlName="fiber" />
-      </div>
-
-      <button type="submit" [disabled]="goalsForm.invalid" class="btn-save">
+      <button type="submit" [disabled]="goalsForm.invalid" class="btn-save" 
+              style="background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px;">
         💾 Guardar Metas Nutricionais
       </button>
     </form>
   </section>
 
-  <hr class="separator">
+  <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
 
-  <section class="checklist-section">
-    <h2>🎯 Checklist de Hábitos</h2>
+  <section class="checklist-section" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <h2 style="font-size: 1.2rem; margin-top: 0; color: #1e293b;">🎯 Checklist de Hábitos</h2>
 
-    <div class="input-box">
+    <div class="input-box" style="display: flex; gap: 10px; margin-bottom: 20px;">
       <input 
         type="text" 
         [ngModel]="novaMeta()" 
         (ngModelChange)="novaMeta.set($event)"
-        placeholder="Ex: Beber 3L de água hoje..."
-        (keyup.enter)="adicionar()">
-      <button (click)="adicionar()" [disabled]="!novaMeta()">Adicionar</button>
+        placeholder="Ex: Beber 3L de água..."
+        (keyup.enter)="adicionar()"
+        style="flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;">
+      
+      <button (click)="adicionar()" [disabled]="!novaMeta().trim()" 
+              style="background: #10b981; color: white; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+        Adicionar
+      </button>
     </div>
 
     <div class="lista">
       @if (carregando()) {
-        <p>A carregar tarefas...</p>
+        <p style="text-align: center; color: #64748b;">A carregar tarefas...</p>
       } @else {
         @for (item of listaMetas(); track item.id) {
-          <div class="item-meta" [class.done]="item.concluida">
-            <div class="check-text">
+          <div class="item-meta" 
+               style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f1f5f9; transition: opacity 0.3s;"
+               [style.opacity]="item.concluida ? '0.6' : '1'">
+            
+            <div class="check-text" style="display: flex; align-items: center; gap: 12px;">
               <input 
                 type="checkbox" 
+                style="width: 18px; height: 18px; cursor: pointer;"
                 [checked]="item.concluida" 
                 (change)="alternarStatus(item)">
-              <span>{{ item.descricao }}</span>
+              <span [style.text-decoration]="item.concluida ? 'line-through' : 'none'"
+                    [style.color]="item.concluida ? '#94a3b8' : '#1e293b'">
+                {{ item.descricao }}
+              </span>
             </div>
-            <button class="btn-delete" (click)="excluir(item.id)">🗑️</button>
+
+            <button class="btn-delete" (click)="excluir(item.id)" 
+                    style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem; padding: 5px;">
+              🗑️
+            </button>
           </div>
         } @empty {
-          <p class="empty-msg">Ainda não tens tarefas para hoje. 💪</p>
+          <p class="empty-msg" style="text-align: center; color: #94a3b8; font-style: italic; margin-top: 20px;">
+            Ainda não tens tarefas para hoje. 💪
+          </p>
         }
       }
     </div>
