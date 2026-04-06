@@ -1,46 +1,67 @@
-# 🍎 Nutrição Activa - API Backend (ODS 3)
+🍎 Nutrição Activa - Fullstack App (ODS 3)
 
-Este é o servidor da aplicação **Nutrição Activa**, desenvolvido para ajudar utilizadores a monitorizar a sua ingestão nutricional diária. O projeto está alinhado com o **Objetivo de Desenvolvimento Sustentável 3 (Saúde e Bem-Estar)** da ONU.
+Esta é uma aplicação completa de monitorização nutricional, composta por uma API Backend robusta e um Frontend Single Page Application (SPA). O projeto está alinhado com o Objectivo de Desenvolvimento Sustentável 3 (Saúde e Bem-Estar) da ONU, facilitando o controlo de metas alimentares diárias.
 
----
+🌐 Links do Projeto
 
-### 🚀 Stack Tecnológica
-| Tecnologia | Função |
-| :--- | :--- |
-| **Node.js 24** | Ambiente de execução |
-| **Express** | Framework Web (API REST) |
-| **TypeScript** | Tipagem e segurança de código |
-| **Supabase** | Base de dados PostgreSQL e Autenticação |
+    Live Demo (Frontend): https://projecto-final-app-nutricao.vercel.app/
 
----
+    API (Backend): https://projectofinal-appnutricao.onrender.com/
 
-### 🔄 Integração Contínua (CI)
-- Configurado **GitHub Actions** para validação automática de código (Linting) em cada Pull Request para a branch `main` e `development`.
+🚀 Stack Tecnológica
+Backend
+Tecnologia	        Função
+Node.js	            Ambiente de execução servidor
+Express	            Framework Web (API REST)
+TypeScript	        Tipagem e segurança de código
+Supabase	        Base de dados PostgreSQL e Autenticação
 
----
+Frontend
+Tecnologia	        Função
+Angular 18+	        Framework SPA (Componentes Standalone)
+Vercel	            Hosting e Deployment Contínuo
+CSS3	            Layout Responsivo (Mobile-First)
+Router	            Gestão de navegação e Proteção de Rotas (AuthGuard)
 
-### 🛠️ Funcionalidades Implementadas (TP1)
-- [x] Ligação funcional ao Supabase Cloud.
-- [x] **GET** `/food-entries/today/:userId`: Lista as entradas do dia e calcula automaticamente os totais de Kcal, Proteínas, Carbohidratos, Gorduras e Fibras.
-- [x] **POST** `/food-entries`: Permite registar um novo consumo de alimento na base de dados.
-- [x] Estrutura de pastas organizada (`routes/`, `config/`).
 
----
+🛠️ Funcionalidades Implementadas
+Core & UX
 
-### 📖 Endpoints Principais
-- `GET /` - Health check da API.
-- `POST /food-entries` - Cria um novo registo (necessita de JSON no body).
-- `GET /food-entries/today/:userId` - Retorna o resumo nutricional do dia.
+    [x] Autenticação: Sistema de Login e Registo integrado com Supabase Auth.
+    [x] Dashboard: Resumo visual das metas diárias (Calorias, Proteínas, Hidratos, Gorduras e Fibras).
+    [x] Gestão de Metas: Personalização de objetivos nutricionais por utilizador.
+    [x] Histórico Dinâmico: Visualização cronológica de todos os registos anteriores.
+    [x] Responsividade: Interface adaptada para Desktop e Dispositivos Móveis.
 
----
+API & Integração
 
-### ⚙️ Como correr localmente
-1. Clona o repositório e entra na pasta `backend`.
-2. Instala as dependências: `npm install`.
-3. Cria um ficheiro `.env` baseado no `.env.example` com as tuas chaves do Supabase.
-4. Compila e inicia: `npm run dev`.
+    [x] GET /food-entries/today/:userId: Cálculo automático de totais diários.
+    [x] POST /food-entries: Registo de novos consumos em tempo real.
+    [x] Segurança: Implementação de AuthGuard no Angular para proteger rotas privadas.
 
----
+🔄 Deployment & CI/CD
 
-### 📐 Decisão de Design
-Escolhi utilizar o **Supabase Client (@supabase/supabase-js)** em vez de um driver PostgreSQL genérico (pg-pool). Esta decisão foi tomada para garantir uma integração nativa com o **Supabase Auth** no futuro e facilitar o deploy no Render.com, utilizando HTTPS (Porta 443) para evitar bloqueios de firewall comuns na Porta 5432.
+    Frontend: Alojado na Vercel com integração direta ao GitHub (Deploy automático ao fazer Push).
+    Backend: Configurado para ambientes Node.js com variáveis de ambiente protegidas.
+    CI: GitHub Actions configurado para validação de código (Linting).
+
+⚙️ Como correr localmente
+1. Backend
+
+    Entra na pasta backend.
+    npm install
+    Cria um .env com SUPABASE_URL e SUPABASE_KEY.
+    npm run dev
+
+2. Frontend
+
+    Entra na pasta frontend.
+    npm install
+    ng serve
+    Abre http://localhost:4200
+
+📐 Decisões de Arquitetura
+
+    SPA (Single Page Application): Optou-se pelo Angular para garantir uma navegação fluida sem recarregamentos de página, essencial para uma boa experiência de utilizador em apps de registo diário.
+    Modularização: O frontend utiliza Standalone Components, reduzindo o boilerplate e melhorando o tempo de carregamento (Lazy Loading).
+    Vercel Rewrites: Configuração de vercel.json para permitir que o Router do Angular gira as rotas diretamente, evitando erros 404 em "Refresh".
